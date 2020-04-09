@@ -30,3 +30,8 @@ thead {
     height: 1.8rem;
     font-weight: bolder;
 }
+
+#user-setup{
+    width:80%;
+    margin:auto;
+}

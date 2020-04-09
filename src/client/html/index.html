@@ -15,7 +15,7 @@
     <canvas id="game-canvas"></canvas>
     <script async src="/game.bundle.js"></script>
 
-    <div id="server-select" class="menu">
+    <div id="server-select" class="menu" hidden>
         <div style="height:3vh;"></div>
         <h1>Select a server</h1>
         <div style="height:1vh;"></div>
@@ -29,9 +29,16 @@
     </div>
 
     <!-- Username selection -->
-    <div id="username-input" hidden>
-        <input type="text" id="username-input" placeholder="Username" />
-        <button id="play-button">PLAY</button>
+    <div id="username-input" class="menu" hidden>
+        <div style="height:5vh;"></div>
+        <h1>Get Ready</h1>
+        <div style="height:1vh;"></div>
+        <p>We are getting you connected to the server.<br> Please enter a username for this game.</p>
+
+        <div id="user-setup">
+            <input type="text" id="username-input" placeholder="Username" />
+            <button type="button" class="btn btn-success" id="play-button">PLAY</button>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
