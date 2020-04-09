@@ -27,6 +27,7 @@ console.log(`Server listening on port ${port}`);
 
 // Setup socket.io
 const io = socketio(server);
+io.set('origins', '*:*');
 
 // Listen for socket.io connections
 io.on('connection', socket => {
