@@ -26,7 +26,6 @@ port = process.env.PORT || 3000;
 if (process.env.ZEIT == "1") {
     port = 443;
 }
-port = 3000;
 
 // Listen on port
 const server = app.listen(port);
