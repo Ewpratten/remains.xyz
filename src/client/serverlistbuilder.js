@@ -14,7 +14,7 @@ export function buildHTMLForServer(server, fillage) {
     }
 
     // Build the HTML
-    return `<tr><td><a href="" onclick="connectToServer(\'${server}\');"><div class="progress"><div class="progress-bar bg-${bar_color}" role="progressbar" style="width: ${fillage}%" aria-valuenow="${fillage}" aria-valuemin="0" aria-valuemax="100">${server}</div></div></a></td></tr>`;
+    return `<tr><td><a href="#" onclick="window.connectToServer(\'${server}\');"><div class="progress"><div class="progress-bar bg-${bar_color}" role="progressbar" style="width: ${fillage}%" aria-valuenow="${fillage}" aria-valuemin="0" aria-valuemax="100">${server}</div></div></a></td></tr>`;
 }
 
 let serversList = document.getElementById("gen-servers");

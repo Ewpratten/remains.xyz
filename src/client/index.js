@@ -13,7 +13,7 @@ styleBuilder.setDocumentTheme();
 
 // Configure the server list
 Constants.servers.forEach(server => {
-    
+
     // Ask the webserver how full the server is
     let fillage = Math.max(Math.floor(Math.random() * 101), 25);
 
@@ -24,20 +24,53 @@ Constants.servers.forEach(server => {
     serverListBuilder.addServerToList(html);
 });
 
+// Game setup elements
+const serverSelectMenu = document.getElementById("server-select");
+const usernameMenu = document.getElementById("username-input");
+const usernameInput = document.getElementById("username-input-box");
+const playButton = document.getElementById("play-button");
 
-// Promise.all([
-//     connect(),
-//     downloadAssets(),
-//   ]).then(() => {
-//     playMenu.classList.remove('hidden');
-//     usernameInput.focus();
-//     playButton.onclick = () => {
-//       // Play!
-//       play(usernameInput.value);
-//       playMenu.classList.add('hidden');
-//       initState();
-//       startCapturingInput();
-//       startRendering();
-//       setLeaderboardHidden(false);
-//     };
-//   });
+// Function for server connect
+function connectToServer(server) {
+    console.log("Player wants to connect to " + server);
+
+    // Check with the server if we can connect 
+    let canConnect = true;
+
+    if (canConnect) {
+        // Hide the server connection menu
+        serverSelectMenu.classList.add("hidden");
+
+        // Show the username menu
+        usernameMenu.classList.remove("hidden");
+        usernameInput.focus();
+
+        // Handle play button
+        playButton.onclick = () => {
+            console.log("Starting game");
+            usernameMenu.classList.add("hidden");
+        }
+    }
+}
+window.connectToServer = connectToServer;
+
+// SHow the server selection menu
+serverSelectMenu.classList.remove('hidden');
+
+Promise.all([
+]).then(() => {
+
+    // SHow the server selection menu
+    serverSelectMenu.classList.remove('hidden');
+
+    // usernameInput.focus();
+    // playButton.onclick = () => {
+    //     // Play!
+    //     play(usernameInput.value);
+    //     playMenu.classList.add('hidden');
+    //     initState();
+    //     startCapturingInput();
+    //     startRendering();
+    //     setLeaderboardHidden(false);
+    // };
+});
