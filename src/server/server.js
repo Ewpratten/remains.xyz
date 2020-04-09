@@ -16,13 +16,15 @@ if (process.env.NODE_ENV === 'development') {
     // Setup Webpack for development
     const compiler = webpack(webpackConfig);
     app.use(webpackDevMiddleware(compiler));
-
-    port = process.env.PORT || 3000;
 } else {
     // Static serve the dist/ folder in production
     app.use(express.static('dist'));
+}
 
-    port = 80;
+// Handle port addressing
+port = process.env.PORT || 3000;
+if (process.env.ZEIT === '1') {
+    port = 443;
 }
 
 // Listen on port
