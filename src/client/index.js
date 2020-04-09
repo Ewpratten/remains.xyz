@@ -3,6 +3,7 @@ const styleBuilder = require("./stylebuilder.js");
 
 // Load the game CSS
 import './css/main.css';
+import './css/menu.css';
 
 // Inject auto-generated styles into page
 console.log("Injecting document styles");
