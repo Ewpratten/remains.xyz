@@ -15,9 +15,16 @@
     <canvas id="game-canvas"></canvas>
     <script async src="/game.bundle.js"></script>
 
+    <!-- Server Selection -->
     <div id="server-select" class="menu fadeIn hidden">
         <div style="height:3vh;"></div>
         <h1>Select a server</h1>
+        <div id="too-many-users-error" class="alert alert-danger alert-dismissible fade show hidden" role="alert">
+            <strong>This server is full. Find another to play on, or wait a few minutes.
+                <button type="button" class="close"  aria-label="Close" onclick="document.getElementById('too-many-users-error').classList.add('hidden');">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
         <div style="height:1vh;"></div>
         <div id="server-list">
             <table class="servers table table-borderless table-striped">
@@ -38,6 +45,19 @@
         <div id="user-setup">
             <input type="text" id="username-input-box" placeholder="Username" />
             <button type="button" class="btn btn-success" id="play-button">PLAY</button>
+        </div>
+    </div>
+
+    <!-- Disconnect notice -->
+    <div id="disconnect-modal" class="menu fadeIn hidden">
+        <div style="height:5vh;"></div>
+        <h1>Disconnected From Server</h1>
+        <div style="height:1vh;"></div>
+        <p>You have lost connection to the game server.<br> Your network connection may have dropped, or the server is
+            performing an update.</p>
+
+        <div id="user-setup">
+            <button type="button" class="btn btn-success" id="reconnect-button">Reconnect To Server</button>
         </div>
     </div>
 

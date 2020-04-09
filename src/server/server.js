@@ -34,14 +34,27 @@ io.on('connection', socket => {
 
     // Set up socket listeners
     socket.on(commsg.QUERY_SERVERS, handleServerQuery);
+    socket.on(commsg.JOIN_SERVER, handleNewPlayer);
 });
 
 function handleServerQuery(_) {
+    console.log("User asked for server list");
+
     // Build a list of servers and their fullness
     let servers = {};
+    console.log(fakeservers.serverMap);
     Object.keys(fakeservers.serverMap).forEach((key) => {
         servers[key] = fakeservers.serverMap[key].getRealPlayerCount();
     })
 
     this.emit(commsg.SERVER_LIST, servers);
+}
+
+function handleNewPlayer(dat) {
+    if (Object.keys(fakeservers.serverMap).includes(dat.server)) {
+        console.log(`${dat.username} has joined server ${dat.server}`);
+        fakeservers.serverMap[dat.server].addPlayer(this, dat.username);
+    } else {
+        console.log(`${dat.username} tried to join non-existent server ${dat.server}`);
+    }
 }

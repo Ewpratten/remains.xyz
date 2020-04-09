@@ -21,3 +21,7 @@ let serversList = document.getElementById("gen-servers");
 export function addServerToList(serverHTML) {
     serversList.innerHTML += serverHTML;
 }
+
+export function clearServerList() {
+    serversList.innerHTML = "";
+}

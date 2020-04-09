@@ -1,7 +1,7 @@
 const styleBuilder = require("./stylebuilder.js");
 const serverListBuilder = require("./serverlistbuilder.js");
 const Constants = require('../shared/constants');
-
+import { getServerList, connect, joinGame } from './networking';
 
 // Load the game CSS
 import './css/main.css';
@@ -12,17 +12,28 @@ console.log("Injecting document styles");
 styleBuilder.setDocumentTheme();
 
 // Configure the server list
-Constants.servers.forEach(server => {
+let serverList = {};
+function updateServerList() {
+    getServerList((servers) => {
+        serverList = servers;
+        serverListBuilder.clearServerList();
+        Object.keys(servers).forEach((key) => {
 
-    // Ask the webserver how full the server is
-    let fillage = Math.max(Math.floor(Math.random() * 101), 25);
+            // Determine the number of players to show
+            let fillage = Math.max(servers[key], 25);
 
-    // Generate the HTML
-    let html = serverListBuilder.buildHTMLForServer(server, fillage);
+            console.log(`Server ${key} has ${fillage} players online`);
 
-    // Add the server to the list
-    serverListBuilder.addServerToList(html);
-});
+            // Generate the HTML
+            let html = serverListBuilder.buildHTMLForServer(key, fillage);
+
+            // Add the server to the list
+            serverListBuilder.addServerToList(html);
+        })
+    });
+}
+setInterval(updateServerList, 30000);
+updateServerList();
 
 // Game setup elements
 const serverSelectMenu = document.getElementById("server-select");
@@ -34,8 +45,11 @@ const playButton = document.getElementById("play-button");
 function connectToServer(server) {
     console.log("Player wants to connect to " + server);
 
+    // Check the user count for the selected server
+    let userCount = serverList[server];
+
     // Check with the server if we can connect 
-    let canConnect = true;
+    let canConnect = userCount < Constants.usersPerServer;
 
     if (canConnect) {
         // Hide the server connection menu
@@ -49,7 +63,10 @@ function connectToServer(server) {
         playButton.onclick = () => {
             console.log("Starting game");
             usernameMenu.classList.add("hidden");
+            joinGame(server, usernameInput.value);
         }
+    } else {
+        document.getElementById("too-many-users-error").classList.remove("hidden");
     }
 }
 window.connectToServer = connectToServer;
@@ -58,6 +75,7 @@ window.connectToServer = connectToServer;
 serverSelectMenu.classList.remove('hidden');
 
 Promise.all([
+    connect()
 ]).then(() => {
 
     // SHow the server selection menu

@@ -10,5 +10,6 @@ module.exports = Object.freeze({
             hl2: "#8cde4a"
         }
     },
-    servers:["Alpha", "Delta", "Kappa", "Phi", "Omega"]
+    servers: ["Alpha", "Delta", "Kappa", "Phi", "Omega"],
+    usersPerServer:100
 });
