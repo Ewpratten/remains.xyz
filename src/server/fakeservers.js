@@ -2,7 +2,9 @@
  * This file contains the code that powers the fake servers used ingame for player sorting
  */
 const player = require("./player")
+const world = require("./world")
 const Constants = require('../shared/constants');
+const commsg = require("../shared/commsg");
 
 const MAX_PLAYERS_PER_SERVER = Constants.usersPerServer;
 
@@ -11,6 +13,7 @@ class FakeServer {
     constructor(name) {
         this.name = name;
         this.players = [];
+        this.world = new world.World();
     }
 
     getRealPlayerCount() {
@@ -33,6 +36,31 @@ class FakeServer {
             }
         })
 
+        // Add listener for player movement
+        socket.on(commsg.USER_INPUT, (dat) => {
+            for (let i = 0; i < outerClass.players.length; i++) {
+                if (outerClass.players[i].socket == socket) {
+                    // Handle this player's movement
+                    outerClass.players[i].handleClientPacket(dat, outerClass.world);
+                }
+            }
+        })
+
+    }
+
+    update() {
+
+        // Build locations listing
+        let locations = []
+        this.players.forEach((player) => {
+            locations.push({ username: player.username, x: player.x, y: player.y });
+        });
+
+        // Notify all players of movement
+        this.players.forEach((player) => {
+            player.socket.emit(commsg.GAME_FRAME, { player_positions: locations, health: player.health, ammo: player.ammo });
+        })
+
     }
 }
 
@@ -47,3 +75,11 @@ function buildServers() {
 }
 
 module.exports = { serverMap: buildServers() };
+
+// Server logic handling
+function handleAllServerLogic() {
+    Object.keys(module.exports.serverMap).forEach((key) => {
+        module.exports.serverMap[key].update();
+    })
+}
+setInterval(handleAllServerLogic, 100);

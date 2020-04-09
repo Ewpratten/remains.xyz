@@ -11,5 +11,6 @@ module.exports = Object.freeze({
         }
     },
     servers: ["Alpha", "Delta", "Kappa", "Phi", "Omega"],
-    usersPerServer:100
+    usersPerServer: 100,
+    startingAmmo:10
 });

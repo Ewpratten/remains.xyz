@@ -35,3 +35,11 @@ export const getServerList = (callback) => {
 export const joinGame = (server, username) => {
     socket.emit(commsg.JOIN_SERVER, { server: server, username: username });
 }
+
+export const setupGameHandler = (callback) => {
+    console.log("Listening for game frames");
+    // socket.on(commsg.GAME_FRAME, (dat) => {
+    //     console.log(dat);
+    //     callback(dat);
+    // })
+}

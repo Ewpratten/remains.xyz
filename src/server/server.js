@@ -23,9 +23,6 @@ if (process.env.NODE_ENV === 'development') {
 
 // Handle port addressing
 port = process.env.PORT || 3000;
-if (process.env.ZEIT == "1") {
-    port = 443;
-}
 
 // Listen on port
 const server = app.listen(port);

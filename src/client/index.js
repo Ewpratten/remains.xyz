@@ -1,7 +1,8 @@
 const styleBuilder = require("./stylebuilder.js");
 const serverListBuilder = require("./serverlistbuilder.js");
 const Constants = require('../shared/constants');
-import { getServerList, connect, joinGame } from './networking';
+import { getServerList, connect, joinGame, setupGameHandler } from './networking';
+import { handleGameFrame } from "./gamestate";
 
 // Load the game CSS
 import './css/main.css';
@@ -15,6 +16,7 @@ styleBuilder.setDocumentTheme();
 let serverList = {};
 function updateServerList() {
     getServerList((servers) => {
+        serverList = {};
         serverList = servers;
         serverListBuilder.clearServerList();
         Object.keys(servers).forEach((key) => {
@@ -64,6 +66,7 @@ function connectToServer(server) {
             console.log("Starting game");
             usernameMenu.classList.add("hidden");
             joinGame(server, usernameInput.value);
+            setupGameHandler(handleGameFrame);
         }
     } else {
         document.getElementById("too-many-users-error").classList.remove("hidden");

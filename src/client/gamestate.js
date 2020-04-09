@@ -3,5 +3,5 @@
  */
 
 function handleGameFrame(data) {
-
+    console.log(data)
 }
