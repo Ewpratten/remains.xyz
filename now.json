@@ -7,6 +7,10 @@
         {
             "src": "src/server/server.js",
             "use": "@now/node-server"
+        }, 
+        {
+            "src": "src/client/index.js",
+            "use": "@now/node-server"
         }
     ]
 }
