@@ -28,5 +28,5 @@ const io = socketio(server);
 
 // Listen for socket.io connections
 io.on('connection', socket => {
-    console.log('Player connected!', socket.id);
-  });
+    console.log("Player connected", socket.id);
+});
