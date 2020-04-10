@@ -12,3 +12,12 @@ body {
 .hidden {
     display: none !important;
 }
+
+.credits{
+    position: absolute;
+    bottom:0%;
+    color:var(--color-fg);
+    padding:0;
+    margin:0;
+
+}
