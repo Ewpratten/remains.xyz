@@ -22,7 +22,7 @@ class Player {
         this.dx = 0.0;
         this.y = 0.0;
         this.dy = 0.0;
-        this.speed = 20;
+        this.speed = 6;
 
         // Weapon
         this.weapon = 0;
