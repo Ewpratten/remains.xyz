@@ -7,7 +7,7 @@ const bullet = require("./bullet")
 const commsg = require("../shared/commsg");
 
 class Player {
-    constructor(socket, username, server) {
+    constructor(socket, username, server, x, y) {
 
         // Connection
         this.socket = socket;
@@ -20,9 +20,9 @@ class Player {
         this.alive = true;
 
         // Movement
-        this.x = 0.0;
+        this.x = x;
         this.dx = 0.0;
-        this.y = 0.0;
+        this.y = y;
         this.dy = 0.0;
         this.speed = Constants.playerSpeed;
 
@@ -39,48 +39,50 @@ class Player {
 
         // Configure movement callback
         let outerClass = this;
-        socket.on(commsg.USER_INPUT, (data) => {
-            // Set XY
-            outerClass.dx = data.dx;
-            outerClass.dy = data.dy;
+        if (socket != null) {
+            socket.on(commsg.USER_INPUT, (data) => {
+                // Set XY
+                outerClass.dx = data.dx;
+                outerClass.dy = data.dy;
 
-            // Get vector normal
-            let length = Math.sqrt(data.rdx * data.rdx + data.rdy * data.rdy);
-            let normdx = data.rdx / length;
-            let normdy = data.rdy / length;
+                // Get vector normal
+                let length = Math.sqrt(data.rdx * data.rdx + data.rdy * data.rdy);
+                let normdx = data.rdx / length;
+                let normdy = data.rdy / length;
 
-            // Handle bullets
-            if (data.click && (normdx != 0.0 || normdy != 0.0)) {
+                // Handle bullets
+                if (data.click && (normdx != 0.0 || normdy != 0.0)) {
 
-                // Only spawn bullet if we have ammo
-                if (outerClass.ammo > 0) {
-                    // Spawn a bullet
-                    let b = new bullet.Bullet(outerClass.x, outerClass.y, normdx, normdy);
-                    outerClass.ammo -= 1;
+                    // Only spawn bullet if we have ammo
+                    if (outerClass.ammo > 0) {
+                        // Spawn a bullet
+                        let b = new bullet.Bullet(outerClass.x, outerClass.y, normdx, normdy);
+                        outerClass.ammo -= 1;
 
-                    // Force the bullet to "teleport" away from player
-                    b.update();
-                    outerClass.server.spawnBullet(b);
+                        // Force the bullet to "teleport" away from player
+                        b.update();
+                        outerClass.server.spawnBullet(b);
+                    }
+
                 }
 
-            }
+                // Set the time alive
+                outerClass.aliveTime = Math.round((new Date().getTime() / 1000) - outerClass.spawnTime);
 
-            // Set the time alive
-            outerClass.aliveTime = Math.round((new Date().getTime() / 1000) - outerClass.spawnTime);
+                // Get list of all players & bullets
+                let response = { server: outerClass.server.getServerData(), health: outerClass.health, ammo: outerClass.ammo, me: { x: outerClass.x, y: outerClass.y }, timeAlive: outerClass.aliveTime };
 
-            // Get list of all players & bullets
-            let response = { server: outerClass.server.getServerData(), health: outerClass.health, ammo: outerClass.ammo, me: { x: outerClass.x, y: outerClass.y }, timeAlive: outerClass.aliveTime };
+                // Send back server data
+                if (outerClass.alive) {
+                    this.socket.emit(commsg.GAME_FRAME, response);
+                }
 
-            // Send back server data
-            if (outerClass.alive) {
-                this.socket.emit(commsg.GAME_FRAME, response);
-            }
-
-            // As soon as we notify the client of death, mark this player for removal
-            if (outerClass.health <= 0) {
-                outerClass.alive = false;
-            }
-        });
+                // As soon as we notify the client of death, mark this player for removal
+                if (outerClass.health <= 0) {
+                    outerClass.alive = false;
+                }
+            });
+        }
     }
 
 

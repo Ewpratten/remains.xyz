@@ -6,6 +6,8 @@ const bullet = require("./bullet")
 const world = require("./world")
 const Constants = require('../shared/constants');
 const commsg = require("../shared/commsg");
+const botplayer = require("./botplayer")
+const namegen = require("./namegen")
 
 const MAX_PLAYERS_PER_SERVER = Constants.usersPerServer;
 
@@ -15,18 +17,20 @@ class FakeServer {
         this.name = name;
         this.bullets = [];
         this.players = [];
+        this.realPlayerCount = 0;
         this.world = new world.World();
         this.lastAmmoDropTime = (new Date().getTime() / 1000);
     }
 
     getRealPlayerCount() {
-        return this.players.length;
+        return this.realPlayerCount;
     }
 
     addPlayer(socket, username) {
 
         // Add the new player
-        this.players.push(new player.Player(socket, username, this));
+        this.players.push(new player.Player(socket, username, this, 0, 0));
+        this.realPlayerCount += 1;
 
         // Add a listener for player disconnect
         let outerClass = this;
@@ -35,6 +39,7 @@ class FakeServer {
             for (let i = 0; i < outerClass.players.length; i++) {
                 if (outerClass.players[i].socket == socket) {
                     outerClass.players.splice(i, 1);
+                    outerClass.realPlayerCount -= 1;
                 }
             }
         })
@@ -43,12 +48,18 @@ class FakeServer {
 
     update() {
 
+        // Fill empty slots
+        if (this.players.length < Constants.usersPerServer) {
+            let bot = new botplayer.BotPlayer(null, namegen.randName(), this, Math.floor((Math.random() * Constants.worldSize[0]) + 1) - (Constants.worldSize[0] / 2), Math.floor((Math.random() * Constants.worldSize[1]) + 1) - (Constants.worldSize[1] / 2));
+            bot.aliveTime = Math.random() * this.players.length;
+            this.players.push(bot);
+        }
+
         // Handle ammo distribution
         let shouldAllowAmmo = false;
         if (((new Date().getTime() / 1000) - this.lastAmmoDropTime) >= Constants.ammoTime.time) {
             shouldAllowAmmo = true;
             this.lastAmmoDropTime = (new Date().getTime() / 1000);
-            console.log("Dropping ammo for all players");
         }
 
         // Update all players
