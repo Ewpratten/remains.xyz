@@ -1,7 +1,22 @@
 const Constants = require("../shared/constants");
 
+function collision(p1x, p1y, r1, p2x, p2y, r2) {
+    var a;
+    var x;
+    var y;
 
-class Bullet{
+    a = r1 + r2;
+    x = p1x - p2x;
+    y = p1y - p2y;
+
+    if (a > Math.sqrt((x * x) + (y * y))) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+class Bullet {
 
     constructor(x, y, dx, dy) {
         this.x = x;
@@ -17,10 +32,10 @@ class Bullet{
     }
 
     collidesWith(x, y, r) {
-        return false;
+        return collision(this.x, this.y, Constants.bulletSize, x, y, r);
     }
 }
 
 module.exports = {
-    Bullet:Bullet
+    Bullet: Bullet
 }

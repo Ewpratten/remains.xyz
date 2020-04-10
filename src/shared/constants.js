@@ -13,6 +13,7 @@ module.exports = Object.freeze({
     servers: ["Alpha", "Delta", "Kappa", "Phi", "Omega"],
     usersPerServer: 100,
     startingAmmo: 10,
+    bulletDamage:10,
     playerSize: 20,
     bulletSize: 5,
     worldSize: [

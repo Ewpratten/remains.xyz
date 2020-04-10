@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="/game.bundle.css">
-    <script data-ad-client="ca-pub-6940033544404615" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-6940033544404615" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 </head>
 
@@ -22,7 +23,8 @@
         <h1>Select a server</h1>
         <div id="too-many-users-error" class="alert alert-danger alert-dismissible fade show hidden" role="alert">
             <strong>This server is full. Find another to play on, or wait a few minutes.
-                <button type="button" class="close"  aria-label="Close" onclick="document.getElementById('too-many-users-error').classList.add('hidden');">
+                <button type="button" class="close" aria-label="Close"
+                    onclick="document.getElementById('too-many-users-error').classList.add('hidden');">
                     <span aria-hidden="true">&times;</span>
                 </button>
         </div>
@@ -59,6 +61,18 @@
 
         <div id="user-setup">
             <button type="button" class="btn btn-success" id="reconnect-button">Reconnect To Server</button>
+        </div>
+    </div>
+
+    <!-- Death notice -->
+    <div id="death-modal" class="menu fadeIn hidden">
+        <div style="height:5vh;"></div>
+        <h1>You Died</h1>
+        <div style="height:1vh;"></div>
+        <p>You were alive for <strong id="life-time">Undefined</strong> seconds.</p>
+
+        <div id="user-setup">
+            <button type="button" class="btn btn-success" id="restart-button">Select Server</button>
         </div>
     </div>
 

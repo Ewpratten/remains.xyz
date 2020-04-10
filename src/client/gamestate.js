@@ -7,6 +7,15 @@ import { renderMe, renderPlayer, clear, renderHealthAndAmmo, renderWorldBorder, 
 
 export function handleGameFrame(data) {
 
+    // Handle death
+    if (data.health <= 0) {
+        console.log('Player died');
+        document.getElementById('death-modal').classList.remove('hidden');
+        document.getElementById('restart-button').onclick = () => {
+            window.location.reload();
+        };
+    }
+
     clear();
 
     // Get me location

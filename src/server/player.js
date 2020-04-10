@@ -17,6 +17,7 @@ class Player {
 
         // Health
         this.health = 100;
+        this.alive = true;
 
         // Movement
         this.x = 0.0;
@@ -61,6 +62,11 @@ class Player {
 
             // Send back server data
             this.socket.emit(commsg.GAME_FRAME, response);
+
+            // As soon as we notify the client of death, mark this player for removal
+            if (outerClass.health <= 0) {
+                outerClass.alive = false;
+            }
         });
     }
 

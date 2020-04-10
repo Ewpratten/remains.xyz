@@ -43,9 +43,15 @@ class FakeServer {
     update() {
 
         // Update all players
-        this.players.forEach((player) => {
-            player.updatePlayerPos(this.world);
-        });
+        for (let i = 0; i < this.players.length; i++) {
+            this.players[i].updatePlayerPos(this.world);
+
+            // If the player is dead, kick them from the server
+            if (!this.players[i].alive) {
+                this.players.splice(i, 1);
+            }
+
+        }
 
         // Update all bullets
         for (let i = 0; i < this.bullets.length; i++) {
@@ -54,6 +60,17 @@ class FakeServer {
             // Check for collisions
             if (this.world.isColliding(this.bullets[i].x, this.bullets[i].y)) {
                 this.bullets.splice(i, 1);
+                continue;
+            }
+
+            // Check for player<->bullet collisions
+
+            for (let j = 0; j < this.players.length; j++) {
+                if (this.bullets[i].collidesWith(this.players[j].x, this.players[j].y, Constants.playerSize)) {
+                    this.bullets.splice(i, 1);
+                    this.players[j].health -= Constants.bulletDamage;
+                    break;
+                }
             }
         }
 
