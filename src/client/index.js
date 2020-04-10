@@ -23,7 +23,7 @@ function updateServerList() {
         Object.keys(servers).forEach((key) => {
 
             // Determine the number of players to show
-            let fillage = Math.max(servers[key], 25);
+            let fillage = servers[key];
 
             console.log(`Server ${key} has ${fillage} players online`);
 

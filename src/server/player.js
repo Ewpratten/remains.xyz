@@ -51,11 +51,17 @@ class Player {
 
             // Handle bullets
             if (data.click && (normdx != 0.0 || normdy != 0.0)) {
-                let b = new bullet.Bullet(outerClass.x, outerClass.y, normdx, normdy);
 
-                // Force the bullet to "teleport" away from player
-                b.update();
-                outerClass.server.spawnBullet(b);
+                // Only spawn bullet if we have ammo
+                if (outerClass.ammo > 0) {
+                    // Spawn a bullet
+                    let b = new bullet.Bullet(outerClass.x, outerClass.y, normdx, normdy);
+                    outerClass.ammo -= 1;
+
+                    // Force the bullet to "teleport" away from player
+                    b.update();
+                    outerClass.server.spawnBullet(b);
+                }
 
             }
 

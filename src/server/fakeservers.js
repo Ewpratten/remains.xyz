@@ -19,7 +19,7 @@ class FakeServer {
     }
 
     getRealPlayerCount() {
-        return this.players.length + 25; // 25 is for testing only
+        return this.players.length;
     }
 
     addPlayer(socket, username) {
