@@ -24,7 +24,7 @@ export function renderMe(x, y) {
     ctx.stroke();
 }
 
-export function renderPlayer(x, y, name) {
+export function renderPlayer(x, y, isMe, name) {
 
     let nx = (window.innerWidth / 2) - (cx - x);
     let ny = (window.innerHeight / 2) - (cy - y);
@@ -43,6 +43,11 @@ export function renderPlayer(x, y, name) {
     if (nx > window.innerWidth || ny > window.innerHeight) {
         canRender = false;
     }
+
+    if (isMe) {
+        canRender = false;
+    }
+    
 
     if (canRender) {
         ctx.beginPath();

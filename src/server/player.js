@@ -24,7 +24,7 @@ class Player {
         this.dx = 0.0;
         this.y = 0.0;
         this.dy = 0.0;
-        this.speed = 15;
+        this.speed = Constants.playerSpeed;
 
         // Weapon
         this.weapon = 0;

@@ -1,10 +1,26 @@
 /**
  * This file handles the game state
  */
+const Constants = require('../shared/constants');
 
 import { ingame, sendPointerInfo } from "./networking";
 import { renderMe, renderPlayer, clear, renderHealthAndAmmo, renderWorldBorder, renderBullet, renderLeaderboard } from "./render";
 
+let frame = {};
+let bgInterpolation = false;
+export function setServerFrame(data) {
+    frame = data;
+
+    if (!bgInterpolation) {
+
+        bgInterpolation = true;
+        setInterval(() => {
+            handleGameFrame(frame);
+        }, 100);
+    }
+}
+
+let interpTrackingData = { player: { lx: 0, ly: 0 } }
 export function handleGameFrame(data) {
 
     // Handle death
@@ -26,7 +42,16 @@ export function handleGameFrame(data) {
 
     // Get all other players
     data.server.players.forEach((player) => {
-        renderPlayer(player.x, player.y, player.username);
+
+        // Determine if this player is me
+        let isMe = false;
+
+        if (player.timeAlive == data.timeAlive) {
+            isMe = true;
+        }
+
+        // Render player
+        renderPlayer(player.x, player.y, isMe, player.username);
     })
 
     // Render all bullets
@@ -40,6 +65,11 @@ export function handleGameFrame(data) {
     // Render HUD
     renderHealthAndAmmo(data.health, data.ammo);
     renderLeaderboard(data.server.players);
+
+    // Handle player interpolation
+    data.me.x += Math.max(Math.min(dx, Constants.playerSpeed), -Constants.playerSpeed);
+    data.me.y += Math.max(Math.min(dy, Constants.playerSpeed), -Constants.playerSpeed);
+
 }
 
 let dx = 0.0;

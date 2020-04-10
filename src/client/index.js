@@ -2,7 +2,7 @@ const styleBuilder = require("./stylebuilder.js");
 const serverListBuilder = require("./serverlistbuilder.js");
 const Constants = require('../shared/constants');
 import { getServerList, connect, joinGame, setupGameHandler } from './networking';
-import { handleGameFrame } from "./gamestate";
+import { setServerFrame } from "./gamestate";
 
 // Load the game CSS
 import './css/main.css';
@@ -68,7 +68,7 @@ function connectToServer(server) {
             console.log("Starting game");
             usernameMenu.classList.add("hidden");
             joinGame(server, usernameInput.value);
-            setupGameHandler(handleGameFrame);
+            setupGameHandler(setServerFrame);
             leaderboard.classList.remove("hidden");
         }
     } else {
