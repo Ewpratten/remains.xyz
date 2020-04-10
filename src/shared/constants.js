@@ -14,6 +14,7 @@ module.exports = Object.freeze({
     usersPerServer: 100,
     startingAmmo: 10,
     playerSize: 20,
+    bulletSize: 5,
     worldSize: [
         1000, 1000
     ]

@@ -30,8 +30,8 @@ export const connect = () => (
     })
 );
 
-export const sendPointerInfo = (dx, dy, click) => {
-    socket.emit(commsg.USER_INPUT, { dx: dx, dy: dy, click: click });
+export const sendPointerInfo = (dx, dy, rdx, rdy, click) => {
+    socket.emit(commsg.USER_INPUT, { dx: dx, dy: dy, rdx: rdx, rdy: rdy, click: click });
 }
 
 export const getServerList = (callback) => {

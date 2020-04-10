@@ -3,6 +3,7 @@
  */
 
 const Constants = require("../shared/constants");
+const bullet = require("./bullet")
 const commsg = require("../shared/commsg");
 
 class Player {
@@ -39,6 +40,21 @@ class Player {
             // Set XY
             outerClass.dx = data.dx;
             outerClass.dy = data.dy;
+
+            // Get vector normal
+            let length = Math.sqrt(data.rdx * data.rdx + data.rdy * data.rdy);
+            let normdx = data.rdx / length;
+            let normdy = data.rdy / length;
+
+            // Handle bullets
+            if (data.click && (normdx != 0.0 || normdy != 0.0)) {
+                let b = new bullet.Bullet(outerClass.x, outerClass.y, normdx, normdy);
+
+                // Force the bullet to "teleport" away from player
+                b.update();
+                outerClass.server.spawnBullet(b);
+
+            }
 
             // Get list of all players & bullets
             let response = { server: outerClass.server.getServerData(), health: outerClass.health, ammo: outerClass.ammo, me: { x: outerClass.x, y: outerClass.y } };

@@ -2,6 +2,7 @@
  * This file contains the code that powers the fake servers used ingame for player sorting
  */
 const player = require("./player")
+const bullet = require("./bullet")
 const world = require("./world")
 const Constants = require('../shared/constants');
 const commsg = require("../shared/commsg");
@@ -12,6 +13,7 @@ class FakeServer {
 
     constructor(name) {
         this.name = name;
+        this.bullets = [];
         this.players = [];
         this.world = new world.World();
     }
@@ -31,7 +33,7 @@ class FakeServer {
             console.log(`${username} removed from server`);
             for (let i = 0; i < outerClass.players.length; i++) {
                 if (outerClass.players[i].socket == socket) {
-                    outerClass.players.splice(i - 1, 1);
+                    outerClass.players.splice(i, 1);
                 }
             }
         })
@@ -45,6 +47,16 @@ class FakeServer {
             player.updatePlayerPos(this.world);
         });
 
+        // Update all bullets
+        for (let i = 0; i < this.bullets.length; i++) {
+            this.bullets[i].update();
+
+            // Check for collisions
+            if (this.world.isColliding(this.bullets[i].x, this.bullets[i].y)) {
+                this.bullets.splice(i, 1);
+            }
+        }
+
     }
 
     getServerData() {
@@ -57,8 +69,15 @@ class FakeServer {
 
         // Build a list of bullet positions
         let bulletPositions = [];
+        this.bullets.forEach((bullet) => {
+            bulletPositions.push({ x: bullet.x, y: bullet.y });
+        })
 
         return { players: playerPositions, bullets: bulletPositions };
+    }
+
+    spawnBullet(bullet) {
+        this.bullets.push(bullet);
     }
 }
 

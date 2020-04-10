@@ -56,6 +56,31 @@ export function renderPlayer(x, y, name) {
 
 }
 
+export function renderBullet(x, y) {
+    let nx = (window.innerWidth / 2) - (cx - x);
+    let ny = (window.innerHeight / 2) - (cy - y);
+
+    // Checks for rendering
+    let canRender = true;
+
+    if (nx < 0 || ny < 0) {
+        canRender = false;
+    }
+
+    if (nx > window.innerWidth || ny > window.innerHeight) {
+        canRender = false;
+    }
+
+    if (canRender) {
+
+        ctx.beginPath();
+        ctx.fillStyle = Constants.theme.colors.hl1;
+        ctx.arc(nx, ny, Constants.bulletSize, 0, 2 * Math.PI);
+        ctx.fill();
+
+    }
+}
+
 export function renderHealthAndAmmo(health, ammo) {
 
     health *= -1;
