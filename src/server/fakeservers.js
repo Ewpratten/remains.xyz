@@ -117,4 +117,4 @@ function handleAllServerLogic() {
         module.exports.serverMap[key].update();
     })
 }
-setInterval(handleAllServerLogic, 100);
+setInterval(handleAllServerLogic, 50);

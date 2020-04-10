@@ -67,8 +67,8 @@ export function handleGameFrame(data) {
     renderLeaderboard(data.server.players);
 
     // Handle player interpolation
-    data.me.x += Math.max(Math.min(dx, Constants.playerSpeed), -Constants.playerSpeed);
-    data.me.y += Math.max(Math.min(dy, Constants.playerSpeed), -Constants.playerSpeed);
+    data.me.x += Math.max(Math.min(dx, Constants.playerSpeed - 2), -Constants.playerSpeed - 2);
+    data.me.y += Math.max(Math.min(dy, Constants.playerSpeed - 2), -Constants.playerSpeed - 2);
 
 }
 
