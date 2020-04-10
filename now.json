@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "env": {
+        "ZEIT": "1"
+    },
+    "builds": [
+        {
+            "src": "src/server/server.js",
+            "use": "@now/node-server"
+        }, 
+        {
+            "src": "src/client/index.js",
+            "use": "@now/node-server"
+        }
+    ]
+}

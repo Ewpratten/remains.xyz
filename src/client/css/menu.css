@@ -1,0 +1,46 @@
+.menu {
+    width: 100vw;
+    max-width: 600px;
+    margin: auto;
+    background-color: var(--color-player);
+    color: var(--color-bg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    min-height: 40vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+}
+
+.servers {
+    width: 90%;
+    margin: auto;
+}
+
+thead {
+    font-weight: bold;
+}
+
+.progress {
+    height: 1.8rem;
+    font-weight: bolder;
+}
+
+#user-setup{
+    width:80%;
+    margin:auto;
+}
+
+@keyframes fadeIn {
+    from    { opacity: 0; }
+    to      { opacity: 1; }
+ }
+ 
+ .fadeIn { 
+    animation: fadeIn 0.2s both ease-in; 
+ }

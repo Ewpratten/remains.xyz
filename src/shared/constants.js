@@ -9,5 +9,16 @@ module.exports = Object.freeze({
             hl1: "#eb3b67",
             hl2: "#8cde4a"
         }
-    }
+    },
+    servers: ["Alpha", "Delta", "Kappa", "Phi", "Omega"],
+    usersPerServer: 100,
+    startingAmmo: 10,
+    bulletDamage:25,
+    playerSize: 20,
+    bulletSize: 5,
+    playerSpeed: 15,
+    leaderboardMaxPlayers: 5,
+    worldSize: [
+        1000, 1000
+    ]
 });

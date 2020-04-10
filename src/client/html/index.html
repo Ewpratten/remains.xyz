@@ -5,19 +5,99 @@
     <meta property="og:title" content="Remains Game">
     <meta property="og:description" content="A fun web game where players fight to be the best of the server">
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="/game.bundle.css">
+    <script data-ad-client="ca-pub-6940033544404615" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
 </head>
 
 <body>
     <canvas id="game-canvas"></canvas>
     <script async src="/game.bundle.js"></script>
 
-    <div id="server-select" hidden></div>
+    <!-- Server Selection -->
+    <div id="server-select" class="menu fadeIn hidden">
+        <div style="height:3vh;"></div>
+        <h1>Select a server</h1>
+        <div id="too-many-users-error" class="alert alert-danger alert-dismissible fade show hidden" role="alert">
+            <strong>This server is full. Find another to play on, or wait a few minutes.
+                <button type="button" class="close" aria-label="Close"
+                    onclick="document.getElementById('too-many-users-error').classList.add('hidden');">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        <div style="height:1vh;"></div>
+        <div id="server-list">
+            <table class="servers table table-borderless table-striped">
+                <tbody id="gen-servers">
+                    <!-- Generated list will be placed here at runtime -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <!-- Username selection -->
-    <div id="username-input" hidden>
-        <input type="text" id="username-input" placeholder="Username" />
-        <button id="play-button">PLAY</button>
+    <div id="username-input" class="menu fadeIn hidden">
+        <div style="height:5vh;"></div>
+        <h1>Get Ready</h1>
+        <div style="height:1vh;"></div>
+        <p>We are getting you connected to the server.<br> Please enter a username for this game.</p>
+
+        <div id="user-setup">
+            <input type="text" id="username-input-box" placeholder="Username" />
+            <button type="button" class="btn btn-success" id="play-button">PLAY</button>
+        </div>
     </div>
+
+    <!-- Disconnect notice -->
+    <div id="disconnect-modal" class="menu fadeIn hidden">
+        <div style="height:5vh;"></div>
+        <h1>Disconnected From Server</h1>
+        <div style="height:1vh;"></div>
+        <p>You have lost connection to the game server.<br> Your network connection may have dropped, or the server is
+            performing an update.</p>
+
+        <div id="user-setup">
+            <button type="button" class="btn btn-success" id="reconnect-button">Reconnect To Server</button>
+        </div>
+    </div>
+
+    <!-- Death notice -->
+    <div id="death-modal" class="menu fadeIn hidden">
+        <div style="height:5vh;"></div>
+        <h1>You Died</h1>
+        <div style="height:1vh;"></div>
+        <p>You were alive for <strong id="life-time">Undefined</strong> seconds.</p>
+
+        <div id="user-setup">
+            <button type="button" class="btn btn-success" id="restart-button">Select Server</button>
+        </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div id="leaderboard" class="fadeIn hidden">
+        <p class="lb-title"><strong>Leaderboard</strong></p>
+        <div id="lb-players">
+        </div>
+    </div>
+
+    <!-- Credits -->
+    <div class="credits">
+        <p>Remains.xyz is a webgame made by <a href="https://retrylife.ca">Evan Pratten</a></p>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
 </body>
