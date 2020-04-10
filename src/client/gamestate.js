@@ -3,7 +3,7 @@
  */
 
 import { ingame, sendPointerInfo } from "./networking";
-import { renderMe, renderPlayer, clear, renderHealthAndAmmo } from "./render";
+import { renderMe, renderPlayer, clear, renderHealthAndAmmo, renderWorldBorder } from "./render";
 
 export function handleGameFrame(data) {
 
@@ -18,12 +18,16 @@ export function handleGameFrame(data) {
         renderPlayer(player.x, player.y, player.username);
     })
 
+    // Get border
+    renderWorldBorder();
+
     // Render HUD
     renderHealthAndAmmo(data.health, data.ammo);
 }
 
 let dx = 0.0;
 let dy = 0.0;
+let click = false;
 
 function setPointer(x, y) {
     dx = (x - window.innerWidth / 2) / 20
@@ -42,7 +46,8 @@ function handleInputs() {
     if (ingame) {
 
         // Send a message with pointer info
-        sendPointerInfo(dx, dy, false);
+        sendPointerInfo(dx, dy, click);
+        click = false;
 
     }
 }
@@ -52,4 +57,7 @@ window.addEventListener('mousemove', (e) => {
 });
 window.addEventListener('touchmove', (e) => {
     setPointer(e.touches[0].clientX, e.touches[0].clientY);
+});
+window.addEventListener('click', (e) => {
+    click = true;
 });

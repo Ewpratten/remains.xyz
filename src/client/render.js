@@ -69,3 +69,22 @@ export function renderHealthAndAmmo(health, ammo) {
     // Ammo
 }
 
+
+export function renderWorldBorder() {
+
+    // Determine rel point
+    let nx = (window.innerWidth / 2) - (cx - -(Constants.worldSize[0] / 2));
+    let ny = ((window.innerHeight / 2) - (cy - -(Constants.worldSize[1] / 2)));
+
+    // Render box
+    ctx.fillStyle = Constants.theme.colors.mg;
+    // ctx.rect(nx, ny, Constants.worldSize[0], Constants.worldSize[1]);
+
+    ctx.fillRect(nx, 0, -10, window.innerHeight);
+    ctx.fillRect(nx + Constants.worldSize[0], 0, 10, window.innerHeight);
+
+    ctx.fillRect(0, ny, window.innerWidth, -10);
+    ctx.fillRect(0, ny + Constants.worldSize[1], window.innerWidth, 10);
+
+
+}
