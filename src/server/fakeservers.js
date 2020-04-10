@@ -48,6 +48,7 @@ class FakeServer {
 
             // If the player is dead, kick them from the server
             if (!this.players[i].alive) {
+                console.log(`${this.players[i].username} died`);
                 this.players.splice(i, 1);
             }
 
@@ -81,7 +82,7 @@ class FakeServer {
         // Build a list of all player positions
         let playerPositions = [];
         this.players.forEach((player) => {
-            playerPositions.push({ username: player.username, x: player.x, y: player.y });
+            playerPositions.push({ username: player.username, x: player.x, y: player.y, timeAlive: player.aliveTime });
         })
 
         // Build a list of bullet positions

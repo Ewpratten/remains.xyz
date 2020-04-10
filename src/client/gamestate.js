@@ -11,9 +11,11 @@ export function handleGameFrame(data) {
     if (data.health <= 0) {
         console.log('Player died');
         document.getElementById('death-modal').classList.remove('hidden');
+        document.getElementById('life-time').innerText = data.timeAlive;
         document.getElementById('restart-button').onclick = () => {
             window.location.reload();
         };
+        return;
     }
 
     clear();

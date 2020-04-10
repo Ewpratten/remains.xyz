@@ -34,6 +34,8 @@ class Player {
 
         // dt
         this.lastTime = new Date().getTime() / 1000;
+        this.spawnTime = new Date().getTime() / 1000;
+        this.aliveTime = 0.0;
 
         // Configure movement callback
         let outerClass = this;
@@ -57,11 +59,16 @@ class Player {
 
             }
 
+            // Set the time alive
+            outerClass.aliveTime = Math.round((new Date().getTime() / 1000) - outerClass.spawnTime);
+
             // Get list of all players & bullets
-            let response = { server: outerClass.server.getServerData(), health: outerClass.health, ammo: outerClass.ammo, me: { x: outerClass.x, y: outerClass.y } };
+            let response = { server: outerClass.server.getServerData(), health: outerClass.health, ammo: outerClass.ammo, me: { x: outerClass.x, y: outerClass.y }, timeAlive: outerClass.aliveTime };
 
             // Send back server data
-            this.socket.emit(commsg.GAME_FRAME, response);
+            if (outerClass.alive) {
+                this.socket.emit(commsg.GAME_FRAME, response);
+            }
 
             // As soon as we notify the client of death, mark this player for removal
             if (outerClass.health <= 0) {
