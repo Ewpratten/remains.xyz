@@ -1,4 +1,6 @@
 const player = require("./player")
+const bullet = require("./bullet")
+const Constants = require('../shared/constants');
 
 class BotPlayer extends player.Player {
 
@@ -39,7 +41,6 @@ class BotPlayer extends player.Player {
         this.dx = Math.max(Math.min(closest.x, this.speed), -this.speed);
         this.dy = Math.max(Math.min(closest.y, this.speed), -this.speed);
 
-
         // Handle movement
         let newX = this.x + this.dx;
 
@@ -57,6 +58,22 @@ class BotPlayer extends player.Player {
             newY = this.y;
         }
         this.y = newY;
+
+        // Find normal for bullet
+        let length = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+        let normdx = this.dx / length;
+        let normdy = this.dy / length;
+
+        // Random chance of bullet
+        if (Math.random() > Constants.botShootChance && this.ammo >0) {
+            // Spawn a bullet
+            let b = new bullet.Bullet(this.x, this.y, normdx, normdy);
+            this.ammo -= 1;
+
+            // Force the bullet to "teleport" away from player
+            b.update();
+            this.server.spawnBullet(b);
+        }
     }
 
 }

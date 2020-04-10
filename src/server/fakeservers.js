@@ -23,7 +23,7 @@ class FakeServer {
     }
 
     getRealPlayerCount() {
-        return this.realPlayerCount;
+        return Math.max(this.realPlayerCount, (Math.random()*Constants.usersPerServer*0.4));
     }
 
     addPlayer(socket, username) {
@@ -51,7 +51,7 @@ class FakeServer {
         // Fill empty slots
         if (this.players.length < Constants.usersPerServer) {
             let bot = new botplayer.BotPlayer(null, namegen.randName(), this, Math.floor((Math.random() * Constants.worldSize[0]) + 1) - (Constants.worldSize[0] / 2), Math.floor((Math.random() * Constants.worldSize[1]) + 1) - (Constants.worldSize[1] / 2));
-            bot.aliveTime = Math.random() * this.players.length;
+            bot.spawnTime = (new Date().getTime() / 1000) + (Math.random() * Constants.usersPerServer);
             this.players.push(bot);
         }
 

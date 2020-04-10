@@ -15,8 +15,9 @@ module.exports = Object.freeze({
     startingAmmo: 11,
     bulletDamage:25,
     playerSize: 20,
-    bulletSize: 5,
+    bulletSize: 8,
     playerSpeed: 15,
+    botShootChance:0.96,
     leaderboardMaxPlayers: 5,
     worldSize: [
         1500, 1500
