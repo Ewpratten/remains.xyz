@@ -3,7 +3,7 @@
  */
 
 import { ingame, sendPointerInfo } from "./networking";
-import { renderMe, renderPlayer, clear } from "./render";
+import { renderMe, renderPlayer, clear, renderHealthAndAmmo } from "./render";
 
 export function handleGameFrame(data) {
 
@@ -17,14 +17,17 @@ export function handleGameFrame(data) {
     data.server.players.forEach((player) => {
         renderPlayer(player.x, player.y, player.username);
     })
+
+    // Render HUD
+    renderHealthAndAmmo(data.health, data.ammo);
 }
 
 let dx = 0.0;
 let dy = 0.0;
 
 function setPointer(x, y) {
-    dx = (x - window.innerWidth / 2) / 30
-    dy = (y - window.innerHeight / 2) / 30
+    dx = (x - window.innerWidth / 2) / 20
+    dy = (y - window.innerHeight / 2) / 20
 
     if (Math.abs(dx) < 1.5) {
         dx = 0;

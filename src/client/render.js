@@ -1,4 +1,6 @@
 
+const Constants = require('../shared/constants');
+
 const canvas = document.getElementById("game-canvas");
 const ctx = canvas.getContext("2d");
 ctx.canvas.width = window.innerWidth;
@@ -18,14 +20,14 @@ export function renderMe(x, y) {
     cy = y;
 
     ctx.beginPath();
-    ctx.arc((window.innerWidth / 2), (window.innerHeight / 2), 10, 0, 2 * Math.PI);
+    ctx.arc((window.innerWidth / 2), (window.innerHeight / 2), Constants.playerSize, 0, 2 * Math.PI);
     ctx.stroke();
 }
 
 export function renderPlayer(x, y, name) {
 
-    let nx = x - cx + (window.innerWidth / 2);
-    let ny = y - cy + (window.innerHeight / 2);
+    let nx = (window.innerWidth / 2) - (cx - x);
+    let ny = (window.innerHeight / 2) - (cy - y);
 
     // Checks for rendering
     let canRender = true;
@@ -44,9 +46,26 @@ export function renderPlayer(x, y, name) {
 
     if (canRender) {
         ctx.beginPath();
-        ctx.arc(nx, ny, 10, 0, 2 * Math.PI);
+        ctx.arc(nx, ny, Constants.playerSize, 0, 2 * Math.PI);
         ctx.stroke();
+
+        ctx.font = "20px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(name, nx, ny - Constants.playerSize - 10);
     }
 
+}
+
+export function renderHealthAndAmmo(health, ammo) {
+
+    health *= -1;
+    health += 100;
+
+    // Health
+    let width = window.innerWidth * (health / 100);
+    ctx.fillStyle = Constants.theme.colors.hl2;
+    ctx.fillRect(width, window.innerHeight - 20, window.innerWidth, 20);
+
+    // Ammo
 }
 

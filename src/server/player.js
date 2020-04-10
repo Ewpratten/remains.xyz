@@ -22,7 +22,7 @@ class Player {
         this.dx = 0.0;
         this.y = 0.0;
         this.dy = 0.0;
-        this.speed = 6;
+        this.speed = 15;
 
         // Weapon
         this.weapon = 0;
@@ -37,8 +37,8 @@ class Player {
         let outerClass = this;
         socket.on(commsg.USER_INPUT, (data) => {
             // Set XY
-            outerClass.dx = Math.max(Math.min(data.dx, outerClass.speed), -outerClass.speed);
-            outerClass.dy = Math.max(Math.min(data.dy, outerClass.speed), -outerClass.speed);
+            outerClass.dx = data.dx;
+            outerClass.dy = data.dy;
 
             // Get list of all players & bullets
             let response = { server: outerClass.server.getServerData(), health: outerClass.health, ammo: outerClass.ammo, me: { x: outerClass.x, y: outerClass.y } };
@@ -56,6 +56,10 @@ class Player {
         let dt = time - this.lastTime;
         this.lastTime = time;
         let speed = this.speed * dt;
+
+        // Clamp speed
+        this.dx = Math.max(Math.min(this.dx, this.speed), -this.speed);
+        this.dy = Math.max(Math.min(this.dy, this.speed), -this.speed);
 
         // Handle movement
         let newX = this.x + this.dx;
