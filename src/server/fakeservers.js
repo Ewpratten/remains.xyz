@@ -23,7 +23,7 @@ class FakeServer {
     addPlayer(socket, username) {
 
         // Add the new player
-        this.players.push(new player.Player(socket, username));
+        this.players.push(new player.Player(socket, username, this));
 
         // Add a listener for player disconnect
         let outerClass = this;
@@ -36,31 +36,29 @@ class FakeServer {
             }
         })
 
-        // Add listener for player movement
-        socket.on(commsg.USER_INPUT, (dat) => {
-            for (let i = 0; i < outerClass.players.length; i++) {
-                if (outerClass.players[i].socket == socket) {
-                    // Handle this player's movement
-                    outerClass.players[i].handleClientPacket(dat, outerClass.world);
-                }
-            }
-        })
-
     }
 
     update() {
 
-        // Build locations listing
-        let locations = []
+        // Update all players
         this.players.forEach((player) => {
-            locations.push({ username: player.username, x: player.x, y: player.y });
+            player.updatePlayerPos(this.world);
         });
 
-        // Notify all players of movement
+    }
+
+    getServerData() {
+
+        // Build a list of all player positions
+        let playerPositions = [];
         this.players.forEach((player) => {
-            player.socket.emit(commsg.GAME_FRAME, { player_positions: locations, health: player.health, ammo: player.ammo });
+            playerPositions.push({ username: player.username, x: player.x, y: player.y });
         })
 
+        // Build a list of bullet positions
+        let bulletPositions = [];
+
+        return { players: playerPositions, bullets: bulletPositions };
     }
 }
 

@@ -3,22 +3,26 @@
  */
 
 const Constants = require("../shared/constants");
+const commsg = require("../shared/commsg");
 
 class Player {
-    constructor(socket, username) {
+    constructor(socket, username, server) {
 
         // Connection
         this.socket = socket;
         this.isReal = (socket != null);
         this.username = username;
+        this.server = server;
 
         // Health
         this.health = 100;
 
         // Movement
         this.x = 0.0;
+        this.dx = 0.0;
         this.y = 0.0;
-        this.speed = 100;
+        this.dy = 0.0;
+        this.speed = 20;
 
         // Weapon
         this.weapon = 0;
@@ -28,9 +32,24 @@ class Player {
 
         // dt
         this.lastTime = new Date().getTime() / 1000;
+
+        // Configure movement callback
+        let outerClass = this;
+        socket.on(commsg.USER_INPUT, (data) => {
+            // Set XY
+            outerClass.dx = Math.max(Math.min(data.dx, outerClass.speed), -outerClass.speed);
+            outerClass.dy = Math.max(Math.min(data.dy, outerClass.speed), -outerClass.speed);
+
+            // Get list of all players & bullets
+            let response = { server: outerClass.server.getServerData(), health: outerClass.health, ammo: outerClass.ammo, me: { x: outerClass.x, y: outerClass.y } };
+
+            // Send back server data
+            this.socket.emit(commsg.GAME_FRAME, response);
+        });
     }
 
-    handleClientPacket(data, world) {
+
+    updatePlayerPos(world) {
 
         // Fix speed hax by doing speed calculations server-side
         let time = new Date().getTime() / 1000;
@@ -39,40 +58,23 @@ class Player {
         let speed = this.speed * dt;
 
         // Handle movement
-        let newX = this.x;
-        if (data.left) {
-            newX -= speed;
-        }
-        if (data.right) {
-            newX + speed;
-        }
+        let newX = this.x + this.dx;
 
         // Handle X collision
         if (world.isColliding(newX, this.y)) {
             newX = this.x;
         }
+
         this.x = newX;
 
-        let newY = this.y;
-        if (data.up) {
-            newY -= speed;
-        }
-        if (data.down) {
-            newY + speed;
-        }
+        let newY = this.y + this.dy;
 
-        // Handle X collision
+        // Handle Y collision
         if (world.isColliding(this.x, newY)) {
             newY = this.y;
         }
         this.y = newY;
-
     }
-
-    getPlayerPosition() {
-        return { x: this.x, y: this.y };
-    }
-
 }
 
 module.exports = {

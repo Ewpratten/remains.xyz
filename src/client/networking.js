@@ -13,11 +13,14 @@ const connectedPromise = new Promise(resolve => {
     });
 });
 
+export let ingame = false;
+
 export const connect = () => (
     connectedPromise.then(() => {
         // Register callbacks
         socket.on(commsg.GAME_FRAME, handleGameFrame);
         socket.on('disconnect', () => {
+            ingame = false;
             console.log('Disconnected from server.');
             document.getElementById('disconnect-modal').classList.remove('hidden');
             document.getElementById('reconnect-button').onclick = () => {
@@ -27,6 +30,10 @@ export const connect = () => (
     })
 );
 
+export const sendPointerInfo = (dx, dy, click) => {
+    socket.emit(commsg.USER_INPUT, { dx: dx, dy: dy, click: click });
+}
+
 export const getServerList = (callback) => {
     socket.emit(commsg.QUERY_SERVERS);
     socket.on(commsg.SERVER_LIST, callback);
@@ -34,12 +41,12 @@ export const getServerList = (callback) => {
 
 export const joinGame = (server, username) => {
     socket.emit(commsg.JOIN_SERVER, { server: server, username: username });
+    ingame = true;
 }
 
 export const setupGameHandler = (callback) => {
     console.log("Listening for game frames");
-    // socket.on(commsg.GAME_FRAME, (dat) => {
-    //     console.log(dat);
-    //     callback(dat);
-    // })
+    socket.on(commsg.GAME_FRAME, (dat) => {
+        callback(dat);
+    })
 }
