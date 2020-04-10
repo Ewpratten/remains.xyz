@@ -12,7 +12,7 @@ module.exports = Object.freeze({
     },
     servers: ["Alpha", "Delta", "Kappa", "Phi", "Omega"],
     usersPerServer: 10,
-    startingAmmo: 31,
+    startingAmmo: 11,
     bulletDamage:25,
     playerSize: 20,
     bulletSize: 5,
@@ -20,5 +20,9 @@ module.exports = Object.freeze({
     leaderboardMaxPlayers: 5,
     worldSize: [
         1500, 1500
-    ]
+    ],
+    ammoTime: {
+        ammo: 15,
+        time:10
+    }
 });

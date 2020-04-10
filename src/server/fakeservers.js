@@ -16,6 +16,7 @@ class FakeServer {
         this.bullets = [];
         this.players = [];
         this.world = new world.World();
+        this.lastAmmoDropTime = (new Date().getTime() / 1000);
     }
 
     getRealPlayerCount() {
@@ -42,9 +43,22 @@ class FakeServer {
 
     update() {
 
+        // Handle ammo distribution
+        let shouldAllowAmmo = false;
+        if (((new Date().getTime() / 1000) - this.lastAmmoDropTime) >= Constants.ammoTime.time) {
+            shouldAllowAmmo = true;
+            this.lastAmmoDropTime = (new Date().getTime() / 1000);
+            console.log("Dropping ammo for all players");
+        }
+
         // Update all players
         for (let i = 0; i < this.players.length; i++) {
             this.players[i].updatePlayerPos(this.world);
+
+            // Allow ammo if specified
+            if (shouldAllowAmmo) {
+                this.players[i].ammo += Constants.ammoTime.ammo;
+            }
 
             // If the player is dead, kick them from the server
             if (!this.players[i].alive) {

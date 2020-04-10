@@ -100,7 +100,8 @@ export function renderHealthAndAmmo(health, ammo) {
     ctx.font = "40px Arial";
     ctx.textAlign = "center";
     ctx.fillStyle = Constants.theme.colors.hl1;
-    ctx.fillText(ammo, window.innerWidth - 80, window.innerHeight - 30);
+    let astr = (ammo > 99) ? "99+" : ammo;
+    ctx.fillText(astr, window.innerWidth - 60, window.innerHeight - 30);
 }
 
 

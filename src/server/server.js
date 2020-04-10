@@ -46,7 +46,6 @@ function handleServerQuery(_) {
 
     // Build a list of servers and their fullness
     let servers = {};
-    console.log(fakeservers.serverMap);
     Object.keys(fakeservers.serverMap).forEach((key) => {
         servers[key] = fakeservers.serverMap[key].getRealPlayerCount();
     })
