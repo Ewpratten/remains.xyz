@@ -13,9 +13,10 @@ module.exports = Object.freeze({
     servers: ["Alpha", "Delta", "Kappa", "Phi", "Omega"],
     usersPerServer: 100,
     startingAmmo: 10,
-    bulletDamage:10,
+    bulletDamage:25,
     playerSize: 20,
     bulletSize: 5,
+    leaderboardMaxPlayers: 5,
     worldSize: [
         1000, 1000
     ]

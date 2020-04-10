@@ -3,7 +3,7 @@
  */
 
 import { ingame, sendPointerInfo } from "./networking";
-import { renderMe, renderPlayer, clear, renderHealthAndAmmo, renderWorldBorder, renderBullet } from "./render";
+import { renderMe, renderPlayer, clear, renderHealthAndAmmo, renderWorldBorder, renderBullet, renderLeaderboard } from "./render";
 
 export function handleGameFrame(data) {
 
@@ -39,6 +39,7 @@ export function handleGameFrame(data) {
 
     // Render HUD
     renderHealthAndAmmo(data.health, data.ammo);
+    renderLeaderboard(data.server.players);
 }
 
 let dx = 0.0;

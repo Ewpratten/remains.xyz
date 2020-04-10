@@ -7,6 +7,7 @@ import { handleGameFrame } from "./gamestate";
 // Load the game CSS
 import './css/main.css';
 import './css/menu.css';
+import './css/leaderboard.css';
 
 // Inject auto-generated styles into page
 console.log("Injecting document styles");
@@ -42,6 +43,7 @@ const serverSelectMenu = document.getElementById("server-select");
 const usernameMenu = document.getElementById("username-input");
 const usernameInput = document.getElementById("username-input-box");
 const playButton = document.getElementById("play-button");
+const leaderboard = document.getElementById("leaderboard")
 
 // Function for server connect
 function connectToServer(server) {
@@ -67,6 +69,7 @@ function connectToServer(server) {
             usernameMenu.classList.add("hidden");
             joinGame(server, usernameInput.value);
             setupGameHandler(handleGameFrame);
+            leaderboard.classList.remove("hidden");
         }
     } else {
         document.getElementById("too-many-users-error").classList.remove("hidden");

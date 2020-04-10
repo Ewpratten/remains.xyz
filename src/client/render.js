@@ -117,3 +117,29 @@ export function renderWorldBorder() {
 
 
 }
+
+
+const leaderboard = document.getElementById("lb-players");
+export function renderLeaderboard(players) {
+
+    // Sort players based on time alive
+    players.sort((a, b) => (a.timeAlive <= b.timeAlive) ? 1 : -1)
+
+    // Clear players
+    leaderboard.innerHTML = "";
+
+    for (let i = 0; i < players.length; i++) {
+        // Skip player if over leaderboard limie
+        if (i + 1 > Constants.leaderboardMaxPlayers) {
+            continue;
+        }
+
+        // Generate name HTML
+        let html = `<p class="lb-player"><strong class="lb-number">${i + 1}) </strong>${players[i].username}</p>`
+
+        // Add name to list
+        leaderboard.innerHTML += html;
+
+    }
+
+}
