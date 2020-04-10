@@ -67,6 +67,10 @@ export function renderHealthAndAmmo(health, ammo) {
     ctx.fillRect(width, window.innerHeight - 20, window.innerWidth, 20);
 
     // Ammo
+    ctx.font = "40px Arial";
+    ctx.textAlign = "center";
+    ctx.fillStyle = Constants.theme.colors.hl1;
+    ctx.fillText(ammo, window.innerWidth - 80, window.innerHeight - 30);
 }
 
 
@@ -74,7 +78,7 @@ export function renderWorldBorder() {
 
     // Determine rel point
     let nx = (window.innerWidth / 2) - (cx - -(Constants.worldSize[0] / 2));
-    let ny = ((window.innerHeight / 2) - (cy - -(Constants.worldSize[1] / 2)));
+    let ny = (window.innerHeight / 2) - (cy - -(Constants.worldSize[1] / 2));
 
     // Render box
     ctx.fillStyle = Constants.theme.colors.mg;
