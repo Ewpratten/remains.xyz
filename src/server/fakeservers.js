@@ -49,10 +49,15 @@ class FakeServer {
     update() {
 
         // Fill empty slots
-        if (this.players.length < Constants.usersPerServer) {
+        if (this.players.length < Constants.usersPerServer && this.realPlayerCount >0) {
             let bot = new botplayer.BotPlayer(null, namegen.randName(), this, Math.floor((Math.random() * Constants.worldSize[0]) + 1) - (Constants.worldSize[0] / 2), Math.floor((Math.random() * Constants.worldSize[1]) + 1) - (Constants.worldSize[1] / 2));
             bot.spawnTime = (new Date().getTime() / 1000) + (Math.random() * Constants.usersPerServer);
             this.players.push(bot);
+        }
+
+        // Kill bots if nobody is online
+        if (this.realPlayerCount == 0) {
+            this.players = [];
         }
 
         // Handle ammo distribution
@@ -107,7 +112,7 @@ class FakeServer {
         // Build a list of all player positions
         let playerPositions = [];
         this.players.forEach((player) => {
-            playerPositions.push({ username: player.username, x: player.x, y: player.y, timeAlive: player.aliveTime });
+            playerPositions.push({ username: player.username, x: player.x, y: player.y, timeAlive: player.aliveTime, health:player.health });
         })
 
         // Build a list of bullet positions

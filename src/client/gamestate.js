@@ -51,7 +51,7 @@ export function handleGameFrame(data) {
         }
 
         // Render player
-        renderPlayer(player.x, player.y, isMe, player.username);
+        renderPlayer(player.x, player.y, player.health, isMe, player.username);
     })
 
     // Render all bullets

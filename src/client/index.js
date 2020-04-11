@@ -25,8 +25,6 @@ function updateServerList() {
             // Determine the number of players to show
             let fillage = servers[key];
 
-            console.log(`Server ${key} has ${fillage} players online`);
-
             // Generate the HTML
             let html = serverListBuilder.buildHTMLForServer(key, fillage);
 

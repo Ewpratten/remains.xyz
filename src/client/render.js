@@ -24,7 +24,7 @@ export function renderMe(x, y) {
     ctx.stroke();
 }
 
-export function renderPlayer(x, y, isMe, name) {
+export function renderPlayer(x, y, health, isMe, name) {
 
     let nx = (window.innerWidth / 2) - (cx - x);
     let ny = (window.innerHeight / 2) - (cy - y);
@@ -47,7 +47,7 @@ export function renderPlayer(x, y, isMe, name) {
     if (isMe) {
         canRender = false;
     }
-    
+
 
     if (canRender) {
         ctx.beginPath();
@@ -56,7 +56,10 @@ export function renderPlayer(x, y, isMe, name) {
 
         ctx.font = "20px Arial";
         ctx.textAlign = "center";
-        ctx.fillText(name, nx, ny - Constants.playerSize - 10);
+        ctx.fillStyle = Constants.theme.colors.hl2;
+        ctx.fillText(name, nx, ny - Constants.playerSize - 20);
+
+        ctx.fillRect(nx - 25, ny - Constants.playerSize - 15, health / 2, 5);
     }
 
 }
