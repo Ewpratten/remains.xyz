@@ -6,6 +6,8 @@ const bullet = require("./bullet")
 const world = require("./world")
 const Constants = require('../shared/constants');
 const commsg = require("../shared/commsg");
+const botplayer = require("./botplayer")
+const namegen = require("./namegen")
 
 const MAX_PLAYERS_PER_SERVER = Constants.usersPerServer;
 
@@ -15,17 +17,20 @@ class FakeServer {
         this.name = name;
         this.bullets = [];
         this.players = [];
+        this.realPlayerCount = 0;
         this.world = new world.World();
+        this.lastAmmoDropTime = (new Date().getTime() / 1000);
     }
 
     getRealPlayerCount() {
-        return this.players.length + 25; // 25 is for testing only
+        return Math.max(this.realPlayerCount, (Math.random()*Constants.usersPerServer*0.4));
     }
 
     addPlayer(socket, username) {
 
         // Add the new player
-        this.players.push(new player.Player(socket, username, this));
+        this.players.push(new player.Player(socket, username, this, 0, 0));
+        this.realPlayerCount += 1;
 
         // Add a listener for player disconnect
         let outerClass = this;
@@ -34,6 +39,7 @@ class FakeServer {
             for (let i = 0; i < outerClass.players.length; i++) {
                 if (outerClass.players[i].socket == socket) {
                     outerClass.players.splice(i, 1);
+                    outerClass.realPlayerCount -= 1;
                 }
             }
         })
@@ -42,9 +48,33 @@ class FakeServer {
 
     update() {
 
+        // Fill empty slots
+        if (this.players.length < Constants.usersPerServer && this.realPlayerCount >0) {
+            let bot = new botplayer.BotPlayer(null, namegen.randName(), this, Math.floor((Math.random() * Constants.worldSize[0]) + 1) - (Constants.worldSize[0] / 2), Math.floor((Math.random() * Constants.worldSize[1]) + 1) - (Constants.worldSize[1] / 2));
+            bot.spawnTime = (new Date().getTime() / 1000) + (Math.random() * Constants.usersPerServer);
+            this.players.push(bot);
+        }
+
+        // Kill bots if nobody is online
+        if (this.realPlayerCount == 0) {
+            this.players = [];
+        }
+
+        // Handle ammo distribution
+        let shouldAllowAmmo = false;
+        if (((new Date().getTime() / 1000) - this.lastAmmoDropTime) >= Constants.ammoTime.time) {
+            shouldAllowAmmo = true;
+            this.lastAmmoDropTime = (new Date().getTime() / 1000);
+        }
+
         // Update all players
         for (let i = 0; i < this.players.length; i++) {
             this.players[i].updatePlayerPos(this.world);
+
+            // Allow ammo if specified
+            if (shouldAllowAmmo) {
+                this.players[i].ammo += Constants.ammoTime.ammo;
+            }
 
             // If the player is dead, kick them from the server
             if (!this.players[i].alive) {
@@ -82,7 +112,7 @@ class FakeServer {
         // Build a list of all player positions
         let playerPositions = [];
         this.players.forEach((player) => {
-            playerPositions.push({ username: player.username, x: player.x, y: player.y, timeAlive: player.aliveTime });
+            playerPositions.push({ username: player.username, x: player.x, y: player.y, timeAlive: player.aliveTime, health:player.health });
         })
 
         // Build a list of bullet positions

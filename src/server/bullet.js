@@ -37,5 +37,6 @@ class Bullet {
 }
 
 module.exports = {
-    Bullet: Bullet
+    Bullet: Bullet,
+    collision:collision
 }
